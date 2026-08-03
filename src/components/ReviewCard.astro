@@ -1,0 +1,30 @@
+---
+import type { Review } from '../lib/reviews';
+import { formatDate } from '../lib/reviews';
+
+interface Props { review: Review }
+const { review } = Astro.props;
+const { data } = review;
+---
+
+<article class="review-card">
+  <a href={`/reviews/${review.id}/`} aria-label={`${data.title} 리뷰 읽기`}>
+    <div class="book-spine" aria-hidden="true">
+      <span>{data.category}</span>
+      <strong>{data.bookTitle}</strong>
+    </div>
+    <div class="review-card-body">
+      <div class="eyebrow">
+        <span>{data.category}</span>
+        <time datetime={data.publishedAt.toISOString()}>{formatDate(data.publishedAt)}</time>
+      </div>
+      <h2>{data.title}</h2>
+      <p class="book-meta">{data.bookTitle} · {data.author}</p>
+      <p>{data.summary}</p>
+      <div class="card-footer">
+        {data.rating && <span aria-label={`평점 5점 만점에 ${data.rating}점`}>★ {data.rating.toFixed(1)}</span>}
+        <span>리뷰 읽기 →</span>
+      </div>
+    </div>
+  </a>
+</article>

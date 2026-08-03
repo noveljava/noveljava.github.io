@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ReviewCard from '../../components/ReviewCard.astro';
+import { getPublishedReviews } from '../../lib/reviews';
+
+const reviews = await getPublishedReviews();
+const categories = [...new Set(reviews.map(({ data }) => data.category))].sort();
+---
+
+<BaseLayout title="책 리뷰" description="읽은 책에서 발견한 문장과 생각을 기록한 리뷰입니다.">
+  <section class="page-intro">
+    <p class="kicker">BOOK REVIEWS</p>
+    <h1>책 리뷰</h1>
+    <p>완독한 책마다 기억하고 싶은 문장과 생각, 추천하고 싶은 독자를 기록합니다.</p>
+    {categories.length > 0 && <div class="category-list">{categories.map((category) => <span>{category}</span>)}</div>}
+  </section>
+  <section class="content-section compact">
+    {reviews.length > 0 ? (
+      <div class="review-grid">{reviews.map((review) => <ReviewCard review={review} />)}</div>
+    ) : (
+      <div class="empty-state"><span aria-hidden="true">0권</span><h2>아직 공개된 리뷰가 없습니다.</h2><p>첫 번째 독서 기록이 곧 이곳에 놓일 예정입니다.</p></div>
+    )}
+  </section>
+</BaseLayout>

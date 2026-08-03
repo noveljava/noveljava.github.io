@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import { getPublishedReviews } from '../lib/reviews';
+
+const reviews = await getPublishedReviews();
+const recentReviews = reviews.slice(0, 3);
+const categories = [...new Set(reviews.map(({ data }) => data.category))];
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="kicker">A READER'S NOTEBOOK</p>
+      <h1>한 권의 책이 남긴<br /><em>생각의 밑줄</em></h1>
+      <p class="hero-description">
+        빠르게 읽고 잊기보다, 오래 기억하고 싶은 문장과 생각을 기록합니다.
+        좋은 책을 발견하는 데 이 작은 서재가 도움이 되길 바랍니다.
+      </p>
+      <a class="primary-link" href="/reviews/">모든 책 리뷰 보기 <span>→</span></a>
+    </div>
+    <div class="shelf-scene" aria-label="현재 서재 통계">
+      <div class="sun"></div>
+      <div class="shelf-books" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <dl>
+        <div><dt>기록한 책</dt><dd>{reviews.length}</dd></div>
+        <div><dt>분야</dt><dd>{categories.length}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="section-heading">
+      <div><p class="kicker">RECENT REVIEWS</p><h2>최근에 남긴 기록</h2></div>
+      {reviews.length > 3 && <a href="/reviews/">전체 보기 →</a>}
+    </div>
+    {recentReviews.length > 0 ? (
+      <div class="review-grid">{recentReviews.map((review) => <ReviewCard review={review} />)}</div>
+    ) : (
+      <div class="empty-state">
+        <span aria-hidden="true">첫 장</span>
+        <h2>첫 번째 리뷰를 기다리고 있습니다.</h2>
+        <p>읽고 난 뒤에도 마음에 머무는 책부터 천천히 기록해 보세요.</p>
+      </div>
+    )}
+  </section>
+
+  <section class="principles">
+    <p class="kicker">HOW I READ</p>
+    <h2>책을 읽고 남기는 세 가지</h2>
+    <ol>
+      <li><span>01</span><strong>왜 읽었는지</strong><p>책을 펼치게 된 질문과 기대를 남깁니다.</p></li>
+      <li><span>02</span><strong>무엇이 남았는지</strong><p>오래 기억하고 싶은 문장과 생각을 고릅니다.</p></li>
+      <li><span>03</span><strong>누구에게 권할지</strong><p>어떤 독자에게 좋은 책인지 솔직하게 정리합니다.</p></li>
+    </ol>
+  </section>
+</BaseLayout>
