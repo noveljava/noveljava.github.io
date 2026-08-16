@@ -10,6 +10,7 @@ const reviews = defineCollection({
     author: z.string(),
     publishedAt: z.coerce.date(),
     finishedAt: z.coerce.date().optional(),
+    shelf: z.enum(['development', 'general']).default('general'),
     category: z.string(),
     tags: z.array(z.string()).default([]),
     rating: z.number().min(0).max(5).optional(),

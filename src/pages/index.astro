@@ -5,17 +5,19 @@ import { getPublishedReviews } from '../lib/reviews';
 
 const reviews = await getPublishedReviews();
 const recentReviews = reviews.slice(0, 3);
+const developmentReviews = reviews.filter(({ data }) => data.shelf === 'development');
+const generalReviews = reviews.filter(({ data }) => data.shelf === 'general');
 const categories = [...new Set(reviews.map(({ data }) => data.category))];
 ---
 
 <BaseLayout>
   <section class="hero">
     <div class="hero-copy">
-      <p class="kicker">A READER'S NOTEBOOK</p>
-      <h1>한 권의 책이 남긴<br /><em>생각의 밑줄</em></h1>
+      <p class="kicker">CODE, BOOKS &amp; LIFE</p>
+      <h1>코드와 삶 사이,<br /><em>읽고 적용한 기록</em></h1>
       <p class="hero-description">
-        빠르게 읽고 잊기보다, 오래 기억하고 싶은 문장과 생각을 기록합니다.
-        좋은 책을 발견하는 데 이 작은 서재가 도움이 되길 바랍니다.
+        개발서는 코드와 프로젝트에 적용한 경험까지, 그 밖의 책은 오래 남은 문장과
+        생각을 기록합니다. 서로 다른 독서가 한 사람의 서재에서 만납니다.
       </p>
       <a class="primary-link" href="/reviews/">모든 책 리뷰 보기 <span>→</span></a>
     </div>
@@ -25,9 +27,28 @@ const categories = [...new Set(reviews.map(({ data }) => data.category))];
         <span></span><span></span><span></span><span></span><span></span>
       </div>
       <dl>
-        <div><dt>기록한 책</dt><dd>{reviews.length}</dd></div>
-        <div><dt>분야</dt><dd>{categories.length}</dd></div>
+        <div><dt>개발 서재</dt><dd>{developmentReviews.length}</dd></div>
+        <div><dt>일반 서재</dt><dd>{generalReviews.length}</dd></div>
       </dl>
+    </div>
+  </section>
+
+  <section class="shelf-directory" aria-labelledby="shelf-directory-title">
+    <div class="section-heading">
+      <div><p class="kicker">TWO SHELVES</p><h2 id="shelf-directory-title">두 개의 서재</h2></div>
+      <p>{reviews.length}권 · {categories.length}개 분야</p>
+    </div>
+    <div class="shelf-links">
+      <a class="shelf-link development" href="/reviews/#development">
+        <span class="shelf-number">01</span>
+        <div><p>DEVELOPMENT</p><h3>개발 서재</h3><span>읽고, 실험하고, 코드에 적용한 기록</span></div>
+        <strong>{developmentReviews.length}권 →</strong>
+      </a>
+      <a class="shelf-link general" href="/reviews/#general">
+        <span class="shelf-number">02</span>
+        <div><p>GENERAL</p><h3>일반 서재</h3><span>이야기와 삶에서 오래 남은 생각</span></div>
+        <strong>{generalReviews.length}권 →</strong>
+      </a>
     </div>
   </section>
 
@@ -49,11 +70,11 @@ const categories = [...new Set(reviews.map(({ data }) => data.category))];
 
   <section class="principles">
     <p class="kicker">HOW I READ</p>
-    <h2>책을 읽고 남기는 세 가지</h2>
+    <h2>책을 읽고 연결하는 세 가지</h2>
     <ol>
       <li><span>01</span><strong>왜 읽었는지</strong><p>책을 펼치게 된 질문과 기대를 남깁니다.</p></li>
-      <li><span>02</span><strong>무엇이 남았는지</strong><p>오래 기억하고 싶은 문장과 생각을 고릅니다.</p></li>
-      <li><span>03</span><strong>누구에게 권할지</strong><p>어떤 독자에게 좋은 책인지 솔직하게 정리합니다.</p></li>
+      <li><span>02</span><strong>어디에 적용했는지</strong><p>개발서는 코드와 프로젝트에서 직접 확인한 내용을 더합니다.</p></li>
+      <li><span>03</span><strong>무엇이 남았는지</strong><p>일과 삶에 오래 남을 문장과 생각을 고릅니다.</p></li>
     </ol>
   </section>
 </BaseLayout>

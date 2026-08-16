@@ -4,6 +4,7 @@ bookTitle: "책 제목"
 author: "저자"
 publishedAt: 2026-08-03
 finishedAt: 2026-08-03
+shelf: "general"
 category: "인문"
 tags: ["생각", "기록"]
 rating: 4.5

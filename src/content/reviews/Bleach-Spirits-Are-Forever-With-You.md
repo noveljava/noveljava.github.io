@@ -4,6 +4,7 @@ bookTitle: "블리치 Sprits Are Forever With You"
 author: "쿠보 타이토 원저/나리타 료우고 글"
 publishedAt: 2026-08-03
 finishedAt: 2026-08-03
+shelf: "general"
 category: "만화"
 tags: ["만화", "블리치"]
 rating: 3.0

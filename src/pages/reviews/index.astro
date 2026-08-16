@@ -4,21 +4,40 @@ import ReviewCard from '../../components/ReviewCard.astro';
 import { getPublishedReviews } from '../../lib/reviews';
 
 const reviews = await getPublishedReviews();
-const categories = [...new Set(reviews.map(({ data }) => data.category))].sort();
+const developmentReviews = reviews.filter(({ data }) => data.shelf === 'development');
+const generalReviews = reviews.filter(({ data }) => data.shelf === 'general');
 ---
 
-<BaseLayout title="책 리뷰" description="읽은 책에서 발견한 문장과 생각을 기록한 리뷰입니다.">
+<BaseLayout title="두 개의 서재" description="개발서에서 적용한 경험과 일반 도서에서 발견한 생각을 기록합니다.">
   <section class="page-intro">
     <p class="kicker">BOOK REVIEWS</p>
-    <h1>책 리뷰</h1>
-    <p>완독한 책마다 기억하고 싶은 문장과 생각, 추천하고 싶은 독자를 기록합니다.</p>
-    {categories.length > 0 && <div class="category-list">{categories.map((category) => <span>{category}</span>)}</div>}
+    <h1>두 개의 서재</h1>
+    <p>개발서는 배운 내용을 실제 코드에 연결하고, 그 밖의 책은 마음에 남은 문장과 생각을 기록합니다.</p>
+    <nav class="shelf-nav" aria-label="서재 바로가기">
+      <a href="#development">개발 서재 · {developmentReviews.length}권</a>
+      <a href="#general">일반 서재 · {generalReviews.length}권</a>
+    </nav>
   </section>
-  <section class="content-section compact">
-    {reviews.length > 0 ? (
-      <div class="review-grid">{reviews.map((review) => <ReviewCard review={review} />)}</div>
+  <section id="development" class="content-section shelf-section development">
+    <div class="section-heading">
+      <div><p class="kicker">DEVELOPMENT SHELF</p><h2>개발 서재</h2><p>읽는 데서 끝내지 않고 코드와 프로젝트에 적용합니다.</p></div>
+      <span>{developmentReviews.length}권</span>
+    </div>
+    {developmentReviews.length > 0 ? (
+      <div class="review-grid">{developmentReviews.map((review) => <ReviewCard review={review} />)}</div>
     ) : (
-      <div class="empty-state"><span aria-hidden="true">0권</span><h2>아직 공개된 리뷰가 없습니다.</h2><p>첫 번째 독서 기록이 곧 이곳에 놓일 예정입니다.</p></div>
+      <div class="empty-state"><span aria-hidden="true">개발 서재</span><h2>첫 번째 적용 기록을 기다리고 있습니다.</h2><p>기술서를 읽고 실제로 시도한 경험부터 기록해 보세요.</p></div>
+    )}
+  </section>
+  <section id="general" class="content-section shelf-section general">
+    <div class="section-heading">
+      <div><p class="kicker">GENERAL SHELF</p><h2>일반 서재</h2><p>이야기와 삶에서 발견한 생각을 천천히 남깁니다.</p></div>
+      <span>{generalReviews.length}권</span>
+    </div>
+    {generalReviews.length > 0 ? (
+      <div class="review-grid">{generalReviews.map((review) => <ReviewCard review={review} />)}</div>
+    ) : (
+      <div class="empty-state"><span aria-hidden="true">일반 서재</span><h2>첫 번째 독서 기록을 기다리고 있습니다.</h2><p>오래 기억하고 싶은 책부터 기록해 보세요.</p></div>
     )}
   </section>
 </BaseLayout>
